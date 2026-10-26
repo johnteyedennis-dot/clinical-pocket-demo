@@ -3,101 +3,252 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Clinical Pocket Portal — Interactive Study Guide</title>
+  <title>Dr. Sherri's SmartNotes — Interactive Nursing Study Portal</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>
-    tailwind.config = { darkMode: 'class' }
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Playfair Display"', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            cream: '#FAF6F0',
+            charcoal: '#18181B',
+          }
+        }
+      }
+    }
   </script>
+  <style>
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
 </head>
-<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen font-sans transition-colors duration-200">
+<body class="bg-cream dark:bg-zinc-950 text-zinc-800 dark:text-zinc-100 min-h-screen font-sans transition-colors duration-200 pb-12">
 
-  <!-- Sticky Header -->
-  <header class="sticky top-0 z-20 bg-white/90 dark:bg-slate-900/90 backdrop-blur border-b border-slate-200 dark:border-slate-800 px-4 py-3">
+  <!-- Sticky Brand Header -->
+  <header class="sticky top-0 z-30 bg-cream/90 dark:bg-zinc-950/90 backdrop-blur-md border-b border-stone-200 dark:border-zinc-800 px-4 py-3.5">
     <div class="max-w-xl mx-auto flex items-center justify-between">
       <div>
-        <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Interactive Edition</span>
-        <h1 class="text-lg font-extrabold tracking-tight">Cardiopulmonary Quick-Guide</h1>
+        <span class="text-[10px] font-bold uppercase tracking-widest text-amber-700 dark:text-amber-400 block">
+          Dr. Sherri • Interactive Edition
+        </span>
+        <h1 class="font-serif text-2xl font-bold tracking-tight text-zinc-900 dark:text-white">
+          Smart<span class="italic font-normal">Notes</span> Portal
+        </h1>
       </div>
-      <button onclick="document.documentElement.classList.toggle('dark')" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-sm font-medium">
-        🌓 Theme
+      <button 
+        onclick="document.documentElement.classList.toggle('dark')" 
+        class="px-3 py-2 rounded-xl bg-stone-200/80 dark:bg-zinc-800 text-xs font-semibold flex items-center gap-1.5 shadow-sm active:scale-95 transition"
+      >
+        <span>🌓</span> <span>Theme</span>
       </button>
     </div>
   </header>
 
   <!-- Main Content Container -->
-  <main class="max-w-xl mx-auto px-4 py-5 space-y-5">
+  <main class="max-w-xl mx-auto px-4 pt-5 space-y-5">
+
+    <!-- Visual Workflow Banner -->
+    <div class="bg-white dark:bg-zinc-900 border border-stone-200 dark:border-zinc-800 rounded-2xl p-4 shadow-sm">
+      <p class="text-[11px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mb-2.5">
+        Dr. Sherri's SmartNotes Clinical Flow
+      </p>
+      <div class="flex items-center justify-between text-xs font-semibold overflow-x-auto no-scrollbar gap-1.5 py-1">
+        <span class="px-2.5 py-1.5 rounded-lg bg-stone-100 dark:bg-zinc-800 shrink-0">1. Content</span>
+        <span class="text-amber-600 dark:text-amber-400">→</span>
+        <span class="px-2.5 py-1.5 rounded-lg bg-amber-50 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 border border-amber-200/60 dark:border-amber-800/50 shrink-0">2. AI Prompt</span>
+        <span class="text-amber-600 dark:text-amber-400">→</span>
+        <span class="px-2.5 py-1.5 rounded-lg bg-stone-100 dark:bg-zinc-800 shrink-0">3. Clear Notes</span>
+        <span class="text-amber-600 dark:text-amber-400">→</span>
+        <span class="px-2.5 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-800/50 shrink-0">4. Clinical Thinking</span>
+        <span class="text-amber-600 dark:text-amber-400">→</span>
+        <span class="px-2.5 py-1.5 rounded-lg bg-stone-100 dark:bg-zinc-800 shrink-0">5. Active Recall</span>
+      </div>
+    </div>
 
     <!-- Instant Search Bar -->
     <div class="relative">
       <input 
         id="searchInput" 
         type="text" 
-        placeholder="Search topics, values, or drugs (e.g., ABG, Asthma)..." 
+        placeholder="Search Dr. Sherri's SmartNotes (e.g., clinical judgment, recall)..." 
         oninput="filterCards()"
-        class="w-full pl-4 pr-10 py-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm shadow-sm"
+        class="w-full pl-10 pr-4 py-3.5 rounded-2xl bg-white dark:bg-zinc-900 border border-stone-300 dark:border-zinc-800 focus:outline-none focus:ring-2 focus:ring-amber-600 text-sm shadow-sm placeholder:text-zinc-400"
       />
+      <span class="absolute left-3.5 top-3.5 text-zinc-400">🔍</span>
     </div>
 
-    <!-- Category Pills -->
+    <!-- Category Filter Buttons -->
     <div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar text-xs font-semibold">
-      <button onclick="setCategory('all')" class="cat-btn bg-emerald-600 text-white px-3.5 py-1.5 rounded-full shrink-0">All Modules</button>
-      <button onclick="setCategory('Assessment')" class="cat-btn bg-slate-200 dark:bg-slate-800 px-3.5 py-1.5 rounded-full shrink-0">Assessment</button>
-      <button onclick="setCategory('Diagnostics')" class="cat-btn bg-slate-200 dark:bg-slate-800 px-3.5 py-1.5 rounded-full shrink-0">Diagnostics</button>
-      <button onclick="setCategory('Pharmacology')" class="cat-btn bg-slate-200 dark:bg-slate-800 px-3.5 py-1.5 rounded-full shrink-0">Pharmacology</button>
+      <button onclick="setCategory('all', this)" class="cat-btn bg-zinc-900 text-white dark:bg-amber-500 dark:text-zinc-950 px-4 py-2 rounded-full shrink-0 transition">
+        All Modules
+      </button>
+      <button onclick="setCategory('Foundations', this)" class="cat-btn bg-stone-200/80 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 px-4 py-2 rounded-full shrink-0 transition">
+        Foundations
+      </button>
+      <button onclick="setCategory('Workflow', this)" class="cat-btn bg-stone-200/80 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 px-4 py-2 rounded-full shrink-0 transition">
+        How It Works
+      </button>
+      <button onclick="setCategory('Framework', this)" class="cat-btn bg-stone-200/80 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 px-4 py-2 rounded-full shrink-0 transition">
+        3 Core Pillars
+      </button>
+      <button onclick="setCategory('Checklist', this)" class="cat-btn bg-stone-200/80 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 px-4 py-2 rounded-full shrink-0 transition">
+        Study Habits
+      </button>
     </div>
 
-    <!-- Study Cards Container -->
-    <div id="cardsContainer" class="space-y-3">
+    <!-- Collapsible Accordion Cards Container -->
+    <div id="cardsContainer" class="space-y-3.5">
 
-      <!-- Card 1 -->
-      <div class="study-card bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm" data-category="Diagnostics">
-        <button onclick="toggleAccordion(this)" class="w-full text-left flex justify-between items-center">
+      <!-- Card 1: What Are SmartNotes? -->
+      <div class="study-card bg-white dark:bg-zinc-900 border border-stone-200 dark:border-zinc-800 rounded-2xl p-4 shadow-sm" data-category="Foundations">
+        <button onclick="toggleAccordion(this)" class="w-full text-left flex justify-between items-start gap-3">
           <div>
-            <span class="text-[11px] font-bold uppercase text-emerald-500">Diagnostics</span>
-            <h2 class="font-bold text-base">Arterial Blood Gas (ABG) Normal Ranges</h2>
+            <span class="text-[10px] font-bold uppercase tracking-widest text-amber-700 dark:text-amber-400">01 • Foundations</span>
+            <h2 class="font-serif font-bold text-lg text-zinc-900 dark:text-white mt-0.5">What Are SmartNotes?</h2>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">Why memorizing everything fails in nursing school.</p>
           </div>
-          <span class="text-slate-400 text-xl">+</span>
+          <span class="accordion-icon text-zinc-400 text-xl font-bold leading-none mt-1">−</span>
         </button>
-        <div class="hidden mt-3 pt-3 border-t border-slate-100 dark:border-slate-700 text-sm space-y-2 text-slate-600 dark:text-slate-300">
-          <p><strong>pH:</strong> 7.35 – 7.45 (Acidemia &lt; 7.35 | Alkalemia &gt; 7.45)</p>
-          <p><strong>PaCO2:</strong> 35 – 45 mmHg (Respiratory component)</p>
-          <p><strong>HCO3-:</strong> 22 – 26 mEq/L (Metabolic component)</p>
-          <p><strong>PaO2:</strong> 80 – 100 mmHg on room air</p>
+        <div class="mt-3.5 pt-3.5 border-t border-stone-100 dark:border-zinc-800 text-sm space-y-3 text-zinc-600 dark:text-zinc-300 leading-relaxed">
+          <p>In nursing school, it often feels like you have to memorize everything—every symptom, every medication, and every detail.</p>
+          <div class="p-3 rounded-xl bg-amber-50/70 dark:bg-amber-950/30 border-l-4 border-amber-600 text-zinc-800 dark:text-amber-100 text-xs font-medium">
+            <strong>Core Principle:</strong> Memorizing is not how nurses think, and it is not how you build clinical judgment.
+          </div>
+          <p>SmartNotes help you turn overwhelming content into clear, organized, high-yield notes that actually make sense. You learn <strong>what matters</strong> and <strong>why it matters</strong> for patient care.</p>
         </div>
       </div>
 
-      <!-- Card 2 -->
-      <div class="study-card bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm" data-category="Assessment">
-        <button onclick="toggleAccordion(this)" class="w-full text-left flex justify-between items-center">
+      <!-- Card 2: How SmartNotes Work -->
+      <div class="study-card bg-white dark:bg-zinc-900 border border-stone-200 dark:border-zinc-800 rounded-2xl p-4 shadow-sm" data-category="Workflow">
+        <button onclick="toggleAccordion(this)" class="w-full text-left flex justify-between items-start gap-3">
           <div>
-            <span class="text-[11px] font-bold uppercase text-blue-500">Assessment</span>
-            <h2 class="font-bold text-base">Auscultation: Adventitious Breath Sounds</h2>
+            <span class="text-[10px] font-bold uppercase tracking-widest text-emerald-700 dark:text-emerald-400">02 • Workflow</span>
+            <h2 class="font-serif font-bold text-lg text-zinc-900 dark:text-white mt-0.5">How SmartNotes Work (5-Step Flow)</h2>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">From raw lecture content to active recall.</p>
           </div>
-          <span class="text-slate-400 text-xl">+</span>
+          <span class="accordion-icon text-zinc-400 text-xl font-bold leading-none mt-1">+</span>
         </button>
-        <div class="hidden mt-3 pt-3 border-t border-slate-100 dark:border-slate-700 text-sm space-y-2 text-slate-600 dark:text-slate-300">
-          <p><strong>Fine Crackles:</strong> High-pitched popping at end-inspiration (Pulmonary fibrosis, early CHF).</p>
-          <p><strong>Wheezes:</strong> High-pitched musical sounds from narrowed airways (Asthma, bronchospasm).</p>
-          <p><strong>Stridor:</strong> High-pitched monophonic upper airway sound (Croup, post-extubation edema).</p>
+        <div class="hidden mt-3.5 pt-3.5 border-t border-stone-100 dark:border-zinc-800 text-sm space-y-3 text-zinc-600 dark:text-zinc-300">
+          <p>You take the content you need to study, run it through a guided prompt, and receive organized notes you can use to think, review, and quiz yourself with intention:</p>
+          <ol class="space-y-2 text-xs">
+            <li class="flex items-center gap-2.5 p-2 rounded-lg bg-stone-50 dark:bg-zinc-800/60">
+              <span class="w-5 h-5 rounded-full bg-zinc-900 text-white dark:bg-amber-500 dark:text-zinc-950 font-bold flex items-center justify-center shrink-0">1</span>
+              <span><strong>Content:</strong> Gather your raw lecture slides, textbook pages, or disease topic.</span>
+            </li>
+            <li class="flex items-center gap-2.5 p-2 rounded-lg bg-stone-50 dark:bg-zinc-800/60">
+              <span class="w-5 h-5 rounded-full bg-zinc-900 text-white dark:bg-amber-500 dark:text-zinc-950 font-bold flex items-center justify-center shrink-0">2</span>
+              <span><strong>AI Prompt:</strong> Run the material through the structured SmartNotes prompt.</span>
+            </li>
+            <li class="flex items-center gap-2.5 p-2 rounded-lg bg-stone-50 dark:bg-zinc-800/60">
+              <span class="w-5 h-5 rounded-full bg-zinc-900 text-white dark:bg-amber-500 dark:text-zinc-950 font-bold flex items-center justify-center shrink-0">3</span>
+              <span><strong>Clear Notes:</strong> Generate clean, high-yield structured summaries.</span>
+            </li>
+            <li class="flex items-center gap-2.5 p-2 rounded-lg bg-stone-50 dark:bg-zinc-800/60">
+              <span class="w-5 h-5 rounded-full bg-zinc-900 text-white dark:bg-amber-500 dark:text-zinc-950 font-bold flex items-center justify-center shrink-0">4</span>
+              <span><strong>Clinical Thinking:</strong> Connect symptoms and interventions to real bedside priorities.</span>
+            </li>
+            <li class="flex items-center gap-2.5 p-2 rounded-lg bg-stone-50 dark:bg-zinc-800/60">
+              <span class="w-5 h-5 rounded-full bg-zinc-900 text-white dark:bg-amber-500 dark:text-zinc-950 font-bold flex items-center justify-center shrink-0">5</span>
+              <span><strong>Active Recall:</strong> Quiz yourself intentionally instead of passively rereading.</span>
+            </li>
+          </ol>
         </div>
       </div>
 
-      <!-- Card 3 -->
-      <div class="study-card bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm" data-category="Pharmacology">
-        <button onclick="toggleAccordion(this)" class="w-full text-left flex justify-between items-center">
+      <!-- Card 3: Three Parts of SmartNotes -->
+      <div class="study-card bg-white dark:bg-zinc-900 border border-stone-200 dark:border-zinc-800 rounded-2xl p-4 shadow-sm" data-category="Framework">
+        <button onclick="toggleAccordion(this)" class="w-full text-left flex justify-between items-start gap-3">
           <div>
-            <span class="text-[11px] font-bold uppercase text-purple-500">Pharmacology</span>
-            <h2 class="font-bold text-base">Short-Acting Bronchodilators (SABA vs SAMA)</h2>
+            <span class="text-[10px] font-bold uppercase tracking-widest text-purple-700 dark:text-purple-400">03 • Core Pillars</span>
+            <h2 class="font-serif font-bold text-lg text-zinc-900 dark:text-white mt-0.5">Three Parts of SmartNotes</h2>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">Compress, Organize, and Add Clinical Judgment.</p>
           </div>
-          <span class="text-slate-400 text-xl">+</span>
+          <span class="accordion-icon text-zinc-400 text-xl font-bold leading-none mt-1">+</span>
         </button>
-        <div class="hidden mt-3 pt-3 border-t border-slate-100 dark:border-slate-700 text-sm space-y-2 text-slate-600 dark:text-slate-300">
-          <p><strong>Albuterol (Salbutamol):</strong> Beta-2 agonist. Onset: 5–15 min. Relaxes bronchial smooth muscle.</p>
-          <p><strong>Ipratropium Bromide:</strong> Anticholinergic (SAMA). Blocks muscarinic receptors to prevent bronchoconstriction.</p>
+        <div class="hidden mt-3.5 pt-3.5 border-t border-stone-100 dark:border-zinc-800 text-sm space-y-3 text-zinc-600 dark:text-zinc-300">
+          <div class="p-3 rounded-xl bg-stone-50 dark:bg-zinc-800/60 border border-stone-200/60 dark:border-zinc-700/50">
+            <h3 class="font-bold text-zinc-900 dark:text-white text-sm">1. Compress the content</h3>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">• AI helps pull out the most important, testable ideas without the fluff.</p>
+          </div>
+          <div class="p-3 rounded-xl bg-stone-50 dark:bg-zinc-800/60 border border-stone-200/60 dark:border-zinc-700/50">
+            <h3 class="font-bold text-zinc-900 dark:text-white text-sm">2. Organize the information</h3>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">• You get clear visual structure instead of overwhelming lecture chaos.</p>
+          </div>
+          <div class="p-3 rounded-xl bg-stone-50 dark:bg-zinc-800/60 border border-stone-200/60 dark:border-zinc-700/50">
+            <h3 class="font-bold text-zinc-900 dark:text-white text-sm">3. Add clinical judgment</h3>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">• You learn what matters most in a real patient situation.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4: Interactive Outcomes Checklist -->
+      <div class="study-card bg-white dark:bg-zinc-900 border border-stone-200 dark:border-zinc-800 rounded-2xl p-4 shadow-sm" data-category="Checklist">
+        <button onclick="toggleAccordion(this)" class="w-full text-left flex justify-between items-start gap-3">
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-widest text-blue-700 dark:text-blue-400">04 • Interactive Goals</span>
+            <h2 class="font-serif font-bold text-lg text-zinc-900 dark:text-white mt-0.5">How SmartNotes Help You Study</h2>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">Tap to check off your active study outcomes.</p>
+          </div>
+          <span class="accordion-icon text-zinc-400 text-xl font-bold leading-none mt-1">+</span>
+        </button>
+        <div class="hidden mt-3.5 pt-3.5 border-t border-stone-100 dark:border-zinc-800 text-sm space-y-2.5 text-zinc-600 dark:text-zinc-300">
+          <label class="flex items-center gap-3 p-2.5 rounded-xl bg-stone-50 dark:bg-zinc-800/50 cursor-pointer">
+            <input type="checkbox" checked class="w-4 h-4 accent-amber-600 rounded" />
+            <span class="text-xs font-medium">Study with more intention</span>
+          </label>
+          <label class="flex items-center gap-3 p-2.5 rounded-xl bg-stone-50 dark:bg-zinc-800/50 cursor-pointer">
+            <input type="checkbox" checked class="w-4 h-4 accent-amber-600 rounded" />
+            <span class="text-xs font-medium">Understand concepts more deeply</span>
+          </label>
+          <label class="flex items-center gap-3 p-2.5 rounded-xl bg-stone-50 dark:bg-zinc-800/50 cursor-pointer">
+            <input type="checkbox" class="w-4 h-4 accent-amber-600 rounded" />
+            <span class="text-xs font-medium">Build stronger clinical judgment</span>
+          </label>
+          <label class="flex items-center gap-3 p-2.5 rounded-xl bg-stone-50 dark:bg-zinc-800/50 cursor-pointer">
+            <input type="checkbox" class="w-4 h-4 accent-amber-600 rounded" />
+            <span class="text-xs font-medium">Remember information longer</span>
+          </label>
+          <label class="flex items-center gap-3 p-2.5 rounded-xl bg-stone-50 dark:bg-zinc-800/50 cursor-pointer">
+            <input type="checkbox" class="w-4 h-4 accent-amber-600 rounded" />
+            <span class="text-xs font-medium">Stop rereading and start thinking</span>
+          </label>
         </div>
       </div>
 
     </div>
+
+    <!-- Locked Preview Card for Monetization Pitch -->
+    <div class="relative overflow-hidden rounded-2xl border-2 border-dashed border-amber-500/50 bg-gradient-to-b from-amber-50/60 to-stone-100/90 dark:from-zinc-900 dark:to-zinc-950 p-5 text-center shadow-md">
+      <span class="inline-block px-3 py-1 rounded-full bg-amber-500/20 text-amber-800 dark:text-amber-300 text-[11px] font-bold uppercase tracking-wider mb-2">
+        Dr. Sherri's VIP Student Portal
+      </span>
+      <h3 class="font-serif text-xl font-bold text-zinc-900 dark:text-white">
+        Ready to Master Every Nursing System?
+      </h3>
+      <p class="text-xs text-zinc-600 dark:text-zinc-400 max-w-sm mx-auto mt-1.5 leading-relaxed">
+        Get instant search access to all of Dr. Sherri's SmartNotes AI Prompt Templates, Med-Surg Disease Breakdowns, Pharmacology Tables, and Active Recall Quizzes.
+      </p>
+      
+      <!-- Blurred Mockup Lines -->
+      <div class="my-4 space-y-2 opacity-40 select-none pointer-events-none">
+        <div class="h-8 bg-stone-300 dark:bg-zinc-800 rounded-lg w-full"></div>
+        <div class="h-8 bg-stone-300 dark:bg-zinc-800 rounded-lg w-5/6 mx-auto"></div>
+      </div>
+
+      <button 
+        onclick="alert('Demo Preview for Dr. Sherri: We can link this button directly to your Stan Store, Gumroad, or Checkout page!')"
+        class="w-full py-3.5 px-5 rounded-xl bg-zinc-900 hover:bg-zinc-800 dark:bg-amber-500 dark:hover:bg-amber-400 text-white dark:text-zinc-950 font-bold text-sm shadow-lg transition transform active:scale-95"
+      >
+        🔒 Unlock Full 50-Topic Portal
+      </button>
+    </div>
+
   </main>
 
   <script>
@@ -105,13 +256,17 @@
 
     function toggleAccordion(btn) {
       const content = btn.nextElementSibling;
-      const icon = btn.querySelector('span:last-child');
+      const icon = btn.querySelector('.accordion-icon');
       content.classList.toggle('hidden');
       icon.textContent = content.classList.contains('hidden') ? '+' : '−';
     }
 
-    function setCategory(cat) {
+    function setCategory(cat, clickedBtn) {
       activeCategory = cat;
+      document.querySelectorAll('.cat-btn').forEach(btn => {
+        btn.className = 'cat-btn bg-stone-200/80 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 px-4 py-2 rounded-full shrink-0 transition';
+      });
+      clickedBtn.className = 'cat-btn bg-zinc-900 text-white dark:bg-amber-500 dark:text-zinc-950 px-4 py-2 rounded-full shrink-0 transition';
       filterCards();
     }
 
